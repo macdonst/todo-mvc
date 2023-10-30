@@ -1,0 +1,39 @@
+{
+  "name": "enhance-app",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "npx enhance dev",
+    "lint": "eslint ./app/**/*.mjs --fix",
+    "enhance": "enhance"
+  },
+  "devDependencies": {
+    "@enhance/cli": "latest",
+    "@enhance/types": "^0.6.1",
+    "eslint": "^8.49.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ]
+    },
+    "ignorePatterns": [],
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 2022
+    }
+  },
+  "dependencies": {
+    "@begin/validator": "^1.0.1",
+    "@enhance-labs/arc-plugin-enhance": "latest",
+    "@enhance-labs/custom-element": "latest",
+    "@enhance/form-elements": "^1.0.3",
+    "@enhance/styles-cribsheet": "^0.0.9",
+    "todomvc-app-css": "^2.4.3"
+  }
+}

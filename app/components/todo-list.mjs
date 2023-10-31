@@ -3,22 +3,35 @@ import CustomElement from '@enhance-labs/custom-element'
 
 export default class TodoList extends CustomElement {
   connectedCallback() {
-    this.addEventListener('click', event => {
-      let key = event.target.closest(`li`).getAttribute('id')
-      console.log('clicked: ', key)
-      if (event.target.tagName === 'BUTTON') {
-        event.preventDefault()
-        this.deleteTodo(key)
-      } else if (event.target.tagName === 'INPUT') {
-        this.completeTodo(key, event.target)
-      }
-    })
+    this.addEventListener('click', this.handleClick)
+    this.addEventListener('dblclick', this.handleDblClick)
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener('click', this.handleClick)
+    this.removeEventListener('dblclick', this.handleDblClick)
+  }
+
+  handleClick = (event) => {
+    let key = event.target.closest(`li`).getAttribute('id')
+    if (event.target.tagName === 'BUTTON') {
+      event.preventDefault()
+      this.deleteTodo(key)
+    } else if (event.target.tagName === 'INPUT' && event.target.type === 'checkbox') {
+      this.completeTodo(key, event.target)
+    }
+  }
+
+  handleDblClick = (event) => {
+    let li = event.target.closest(`li`)
+    if (event.target.tagName === 'LABEL') {
+      li.classList.toggle('editing')
+    }
   }
 
   completeTodo = async (key, target) => {
     let completed = target.checked ? true : false
     let task = target.nextElementSibling.innerText
-    console.log(task)
     let result = await fetch(`/todos/${key}`, {
       method: "POST",
       headers: {

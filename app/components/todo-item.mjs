@@ -18,7 +18,7 @@ export default class TodoItem extends CustomElement {
                     <button class="destroy"></button>
                 </form>
             </div>
-            <input name="task" type="text" class="edit" value="${task}"/>
+            <todo-item-task task="${task}"/>
         </li>
     `
   }

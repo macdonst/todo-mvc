@@ -24,22 +24,22 @@ export default class TodoList extends CustomElement {
   }
 
   update = ({ todos }) => {
-    console.log('todos are updated', todos)
-    if (todos.length > 0) {
-      this.section.style.display = 'block'
-    } else {
-      this.section.style.display = 'none'
-    }
+    this.section.style.display = todos.length > 0 ? 'block' : 'none'
     this.ul.innerHTML = todos.map(todo => `<todo-item key="${todo.key}" ${todo.completed ? 'completed' : ''} task="${todo.task}"></todo-item>`).join('')
   }
 
   handleClick = (event) => {
-    let key = event.target.closest(`todo-item`).getAttribute('key')
     if (event.target.tagName === 'BUTTON') {
       event.preventDefault()
+      let key = event.target.closest(`todo-item`).getAttribute('key')
       this.deleteTodo(key)
     } else if (event.target.tagName === 'INPUT' && event.target.type === 'checkbox') {
-      this.completeTodo(key, event.target)
+      if (event.target.id === 'toggle-all') {
+        this.api.toggle()
+      } else {
+        let key = event.target.closest(`todo-item`).getAttribute('key')
+        this.completeTodo(key, event.target)
+      }
     }
   }
 

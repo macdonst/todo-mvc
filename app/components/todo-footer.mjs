@@ -20,11 +20,7 @@ export default class TodoFooter extends CustomElement {
 
   update = ({ todos }) => {
     this.counter.innerText = todos.length
-    if (todos.length > 0) {
-      this.footer.style.display = 'block'
-    } else {
-      this.footer.style.display = 'none'
-    }
+    this.footer.style.display = todos.length > 0 ? 'block' : 'none'
   }
 
   render({ html, state }) {

@@ -19,6 +19,7 @@ export default function API() {
     update,
     destroy,
     list,
+    toggle,
     subscribe: store.subscribe,
     unsubscribe: store.unsubscribe
   }
@@ -43,15 +44,32 @@ function mutate(e) {
   }
 }
 
+function toggle() {
+  const copy = store.todos.slice()
+  const active = copy.filter((todo) => !todo.completed)
+  const completed = copy.filter((todo) => todo.completed)
+  if (active.length > 0) {
+    active.map(todo => worker.postMessage({
+      type: UPDATE,
+      data: JSON.stringify({...todo, completed: true})
+    }))
+  } else {
+    completed.map(todo => worker.postMessage({
+      type: UPDATE,
+      data: JSON.stringify({...todo, completed: false})
+    }))
+  }
+}
+
 function createMutation({ todo }) {
   const copy = store.todos.slice()
   copy.push(todo)
   store.todos = copy
 }
 
-function updateMutation(result) {
+function updateMutation({ todo }) {
   const copy = store.todos.slice()
-  copy.splice(copy.findIndex(i => i.key === result.key), 1, result)
+  copy.splice(copy.findIndex(i => i.key === todo.key), 1, todo)
   store.todos = copy
 }
 
@@ -61,8 +79,8 @@ function destroyMutation({ todo }) {
   store.todos = copy
 }
 
-function listMutation(result) {
-  store.todos = result.todos || []
+function listMutation({ todos }) {
+  store.todos = todos || []
 }
 
 function create(todo) {

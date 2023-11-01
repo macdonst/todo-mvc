@@ -13,7 +13,7 @@ export default class TodoList extends CustomElement {
   }
 
   handleClick = (event) => {
-    let key = event.target.closest(`li`).getAttribute('id')
+    let key = event.target.closest(`todo-item`).getAttribute('key')
     if (event.target.tagName === 'BUTTON') {
       event.preventDefault()
       this.deleteTodo(key)

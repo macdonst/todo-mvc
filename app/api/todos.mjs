@@ -18,8 +18,6 @@ export async function get (req) {
     }
   }
 
-  console.log(todos)
-
   return {
     json: { todos }
   }

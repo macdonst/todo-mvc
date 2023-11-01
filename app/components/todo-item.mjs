@@ -1,6 +1,7 @@
 /* globals customElements */
 import CustomElement from '@enhance-labs/custom-element'
 import MorphdomMixin from '@enhance/morphdom-mixin'
+import API from './api.mjs'
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -8,6 +9,7 @@ const ENTER_KEY = 13;
 export default class TodoItem extends MorphdomMixin(CustomElement) {
   constructor() {
     super()
+    this.api = API()
     this.input = this.querySelector('input[type=text]')
     this.li = this.querySelector('li')
     this.checkbox = this.querySelector('input[type=checkbox]')
@@ -56,18 +58,7 @@ export default class TodoItem extends MorphdomMixin(CustomElement) {
     let completed = this.checkbox.checked ? true : false
 
     this.setAttribute('task', task)
-
-    let result = await fetch(`/todos/${key}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-      body: JSON.stringify({ key, task, completed })
-    })
-    let json = await result.json()
-    this.saving = false
-    return json
+    this.api.update(JSON.stringify({ key, task, completed }))
   }
 
   render({ html, state }) {

@@ -1,15 +1,28 @@
 /* globals customElements document */
 import CustomElement from '@enhance-labs/custom-element'
+import API from './api.mjs'
 
 export default class TodoList extends CustomElement {
+  constructor () {
+    super()
+    this.api = API()
+    this.api.list()
+  }
+
   connectedCallback() {
+    this.api.subscribe(this.update, [ 'todos' ])
     this.addEventListener('click', this.handleClick)
     this.addEventListener('dblclick', this.handleDblClick)
   }
 
   disconnectedCallback() {
+    this.api.unsubscribe(this.update)
     this.removeEventListener('click', this.handleClick)
     this.removeEventListener('dblclick', this.handleDblClick)
+  }
+
+  update = ({ todos }) => {
+    console.log('todos are updated', todos)
   }
 
   handleClick = (event) => {
@@ -40,30 +53,18 @@ export default class TodoList extends CustomElement {
       todoItem.setAttribute('completed', '') :
       todoItem.removeAttribute('completed')
     let task = target.nextElementSibling.innerText
-    let result = await fetch(`/todos/${key}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-      body: JSON.stringify({key, task, completed})
-    })
-    let json = await result.json()
-    return json
+
+    this.api.update(JSON.stringify({ key, task, completed }))
   }
 
   deleteTodo = async (key) => {
-    let result = await fetch(`/todos/${key}/delete`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-      body: JSON.stringify({})
-    })
-    let json = await result.json()
-    document.getElementById(key).remove()
-    return json
+    try {
+      this.api.destroy(JSON.stringify({ key }))
+      document.querySelector(`todo-item[key='${key}']`).remove()
+    }
+    catch (err) {
+      console.error(err)
+    }
   }
 
   render({ html, state }) {

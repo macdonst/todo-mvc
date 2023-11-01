@@ -33,6 +33,7 @@
     "@enhance-labs/arc-plugin-enhance": "latest",
     "@enhance-labs/custom-element": "latest",
     "@enhance/form-elements": "^1.0.3",
+    "@enhance/morphdom-mixin": "^1.1.1",
     "@enhance/styles-cribsheet": "^0.0.9",
     "todomvc-app-css": "^2.4.3"
   }

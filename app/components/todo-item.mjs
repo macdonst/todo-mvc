@@ -78,7 +78,7 @@ export default class TodoItem extends MorphdomMixin(CustomElement) {
       : false
 
     return html`
-        <li class="todo">
+        <li class="todo ${checked ? 'completed' : ''}">
             <div class="view">
                 <input name="completed" type="checkbox" class="toggle" ${checked ? 'checked' : ''}/>
                 <label>${task}</label>

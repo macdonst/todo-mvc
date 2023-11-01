@@ -23,9 +23,13 @@ export default class TodoList extends CustomElement {
   }
 
   handleDblClick = (event) => {
-    let li = event.target.closest(`li`)
     if (event.target.tagName === 'LABEL') {
+      let li = event.target.closest(`li`)
       li.classList.toggle('editing')
+      let input = li.querySelector('input[type=text]')
+      input.focus()
+      let len = input.value.length
+      input.setSelectionRange(len, len)
     }
   }
 

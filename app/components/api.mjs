@@ -45,9 +45,8 @@ function mutate(e) {
 }
 
 function toggle() {
-  const copy = store.todos.slice()
-  const active = copy.filter((todo) => !todo.completed)
-  const completed = copy.filter((todo) => todo.completed)
+  const active = store.active.slice()
+  const completed = store.completed.slice()
   if (active.length > 0) {
     active.map(todo => worker.postMessage({
       type: UPDATE,
@@ -61,26 +60,32 @@ function toggle() {
   }
 }
 
+function updateStore(todos) {
+  store.todos = todos
+  store.active = todos.filter((todo) => !todo.completed)
+  store.completed = todos.filter((todo) => todo.completed)
+}
+
 function createMutation({ todo }) {
   const copy = store.todos.slice()
   copy.push(todo)
-  store.todos = copy
+  updateStore(copy)
 }
 
 function updateMutation({ todo }) {
   const copy = store.todos.slice()
   copy.splice(copy.findIndex(i => i.key === todo.key), 1, todo)
-  store.todos = copy
+  updateStore(copy)
 }
 
 function destroyMutation({ todo }) {
   let copy = store.todos.slice()
   copy.splice(copy.findIndex(i => i.key === todo.key), 1)
-  store.todos = copy
+  updateStore(copy)
 }
 
 function listMutation({ todos }) {
-  store.todos = todos || []
+  updateStore(todos || [])
 }
 
 function create(todo) {

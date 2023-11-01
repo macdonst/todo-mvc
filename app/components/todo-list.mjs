@@ -70,12 +70,22 @@ export default class TodoList extends CustomElement {
   }
 
   render({ html, state }) {
-    const { store = {} } = state
-    const { todos = [] } = store
+    const { store = {}, attrs = {} } = state
+    const { filter = 'all' } = attrs
+    const { todos = [], active = [], completed = [] } = store
 
     const display = todos.length ? 'block' : 'none'
 
-    const listItems = todos.map(todo => `<todo-item key="${todo.key}" ${todo.completed ? 'completed' : ''} task="${todo.task}"></todo-item>`).join('')
+    let items = null
+    if (filter === 'active') {
+      items = active
+    } else if (filter === 'completed') {
+      items = completed
+    } else {
+      items = todos
+    }
+
+    const listItems = items.map(todo => `<todo-item key="${todo.key}" ${todo.completed ? 'completed' : ''} task="${todo.task}"></todo-item>`).join('')
 
     return html`
   <section class="main" style="display: ${display};">

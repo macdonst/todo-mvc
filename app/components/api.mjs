@@ -20,6 +20,7 @@ export default function API() {
     destroy,
     list,
     toggle,
+    clear,
     subscribe: store.subscribe,
     unsubscribe: store.unsubscribe
   }
@@ -48,16 +49,15 @@ function toggle() {
   const active = store.active.slice()
   const completed = store.completed.slice()
   if (active.length > 0) {
-    active.map(todo => worker.postMessage({
-      type: UPDATE,
-      data: JSON.stringify({...todo, completed: true})
-    }))
+    active.map(todo => update(JSON.stringify({...todo, completed: true})))
   } else {
-    completed.map(todo => worker.postMessage({
-      type: UPDATE,
-      data: JSON.stringify({...todo, completed: false})
-    }))
+    completed.map(todo => update(JSON.stringify({...todo, completed: false})))
   }
+}
+
+function clear() {
+  const completed = store.completed.slice()
+  completed.map(todo => destroy(JSON.stringify(todo)))
 }
 
 function updateStore(todos) {

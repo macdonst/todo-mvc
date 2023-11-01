@@ -9,21 +9,25 @@ export default class TodoFooter extends CustomElement {
     this.footer = this.querySelector('footer')
     this.counter = this.querySelector('strong')
     this.ul = this.querySelector('ul')
+    this.button = this.querySelector('button')
   }
 
   connectedCallback() {
-    this.api.subscribe(this.update, [ 'active', 'todos' ])
+    this.api.subscribe(this.update, [ 'active', 'completed', 'todos' ])
     this.ul.addEventListener('click', this.filter)
+    this.button.addEventListener('click', this.clear)
   }
 
   disconnectedCallback() {
     this.api.unsubscribe(this.update)
     this.ul.removeEventListener('click', this.filter)
+    this.button.removeEventListener('click', this.clear)
   }
 
-  update = ({ active, todos }) => {
+  update = ({ active, completed, todos }) => {
     this.counter.innerText = active.length
     this.footer.style.display = todos.length > 0 ? 'block' : 'none'
+    this.button.style.display = completed.length > 0 ? 'block' : 'none'
   }
 
   filter = (event) => {
@@ -35,9 +39,13 @@ export default class TodoFooter extends CustomElement {
     document.querySelector('todo-list').setAttribute('filter', 'completed')
   }
 
+  clear = () => {
+    this.api.clear()
+  }
+
   render({ html, state }) {
     const { store = {} } = state
-    const { todos = [], active = [] } = store
+    const { todos = [], active = [], completed = [] } = store
     const display = todos.length ? 'block' : 'none'
 
     return html`
@@ -47,7 +55,7 @@ export default class TodoFooter extends CustomElement {
       <li><a href="#/all" class="selected">All</a></li>
       <li><a href="#/active" class="">Active</a></li>
       <li><a href="#/completed" class="">Completed</a></li></ul>
-      <button class="clear-completed" style="display: none;">Clear completed</button>
+      <button class="clear-completed" style="display: ${completed.length ? 'block' : 'none'};">Clear completed</button>
   </footer>
     `
   }

@@ -19,7 +19,7 @@ export default class TodoFooter extends CustomElement {
   }
 
   update = ({ todos }) => {
-    this.counter.innerText = todos.length
+    this.counter.innerText = todos.filter((todo) => !todo.completed).length
     this.footer.style.display = todos.length > 0 ? 'block' : 'none'
   }
 
@@ -27,10 +27,11 @@ export default class TodoFooter extends CustomElement {
     const { store = {} } = state
     const { todos = [] } = store
     const display = todos.length ? 'block' : 'none'
+    const active = todos.filter((todo) => !todo.completed)
 
     return html`
   <footer class="footer" style="display: ${display};">
-    <span class="todo-count"><strong>${todos.length}</strong> items left</span>
+    <span class="todo-count"><strong>${active.length}</strong> items left</span>
     <ul class="filters">
       <li><a href="#/all" class="selected">All</a></li>
       <li><a href="#/active" class="">Active</a></li>

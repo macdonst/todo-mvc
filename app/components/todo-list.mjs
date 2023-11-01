@@ -1,4 +1,4 @@
-/* globals customElements document */
+/* globals customElements */
 import CustomElement from '@enhance-labs/custom-element'
 import API from './api.mjs'
 
@@ -54,7 +54,7 @@ export default class TodoList extends CustomElement {
     }
   }
 
-  completeTodo = async (key, target) => {
+  completeTodo = (key, target) => {
     let completed = target.checked ? true : false
     let todoItem = target.closest('todo-item')
     completed ?
@@ -65,14 +65,8 @@ export default class TodoList extends CustomElement {
     this.api.update(JSON.stringify({ key, task, completed }))
   }
 
-  deleteTodo = async (key) => {
-    try {
-      this.api.destroy(JSON.stringify({ key }))
-      document.querySelector(`todo-item[key='${key}']`).remove()
-    }
-    catch (err) {
-      console.error(err)
-    }
+  deleteTodo = (key) => {
+    this.api.destroy(JSON.stringify({ key }))
   }
 
   render({ html, state }) {

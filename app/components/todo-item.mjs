@@ -1,6 +1,6 @@
 /* globals customElements */
 import CustomElement from '@enhance-labs/custom-element'
-import MorphdomMixin from '@enhance/morphdom-mixin';
+import MorphdomMixin from '@enhance/morphdom-mixin'
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -15,7 +15,7 @@ export default class TodoItem extends MorphdomMixin(CustomElement) {
   }
 
   static get observedAttributes() {
-    return [ 'task' ]
+    return [ 'completed', 'task' ]
   }
 
   connectedCallback() {

@@ -35,6 +35,10 @@ export default class TodoList extends CustomElement {
 
   completeTodo = async (key, target) => {
     let completed = target.checked ? true : false
+    let todoItem = target.closest('todo-item')
+    completed ?
+      todoItem.setAttribute('completed', '') :
+      todoItem.removeAttribute('completed')
     let task = target.nextElementSibling.innerText
     let result = await fetch(`/todos/${key}`, {
       method: "POST",

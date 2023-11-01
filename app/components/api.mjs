@@ -43,9 +43,9 @@ function mutate(e) {
   }
 }
 
-function createMutation(result) {
+function createMutation({ todo }) {
   const copy = store.todos.slice()
-  copy.push(result)
+  copy.push(todo)
   store.todos = copy
 }
 

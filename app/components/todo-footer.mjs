@@ -6,6 +6,7 @@ export default class TodoFooter extends CustomElement {
   constructor () {
     super()
     this.api = API()
+    this.footer = this.querySelector('footer')
     this.counter = this.querySelector('strong')
   }
 
@@ -19,6 +20,11 @@ export default class TodoFooter extends CustomElement {
 
   update = ({ todos }) => {
     this.counter.innerText = todos.length
+    if (todos.length > 0) {
+      this.footer.style.display = 'block'
+    } else {
+      this.footer.style.display = 'none'
+    }
   }
 
   render({ html, state }) {

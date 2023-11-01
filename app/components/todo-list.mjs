@@ -7,6 +7,8 @@ export default class TodoList extends CustomElement {
     super()
     this.api = API()
     this.api.list()
+    this.section = this.querySelector('section')
+    this.ul = this.querySelector('ul')
   }
 
   connectedCallback() {
@@ -23,6 +25,12 @@ export default class TodoList extends CustomElement {
 
   update = ({ todos }) => {
     console.log('todos are updated', todos)
+    if (todos.length > 0) {
+      this.section.style.display = 'block'
+    } else {
+      this.section.style.display = 'none'
+    }
+    this.ul.innerHTML = todos.map(todo => `<todo-item key="${todo.key}" ${todo.completed ? 'completed' : ''} task="${todo.task}"></todo-item>`).join('')
   }
 
   handleClick = (event) => {

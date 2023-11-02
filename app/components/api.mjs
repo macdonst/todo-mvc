@@ -49,15 +49,15 @@ function toggle() {
   const active = store.active.slice()
   const completed = store.completed.slice()
   if (active.length > 0) {
-    active.map(todo => update(JSON.stringify({...todo, completed: true})))
+    active.map(todo => update({...todo, completed: true}))
   } else {
-    completed.map(todo => update(JSON.stringify({...todo, completed: false})))
+    completed.map(todo => update({...todo, completed: false}))
   }
 }
 
 function clear() {
   const completed = store.completed.slice()
-  completed.map(todo => destroy(JSON.stringify(todo)))
+  completed.map(todo => destroy(todo))
 }
 
 function updateStore(todos) {
@@ -91,14 +91,14 @@ function listMutation({ todos }) {
 function create(todo) {
   worker.postMessage({
     type: CREATE,
-    data: todo
+    data: JSON.stringify(todo)
   })
 }
 
 function destroy (todo) {
   worker.postMessage({
     type: DESTROY,
-    data: todo
+    data: JSON.stringify(todo)
   })
 }
 
@@ -111,6 +111,6 @@ function list () {
 function update (todo) {
   worker.postMessage({
     type: UPDATE,
-    data: todo
+    data: JSON.stringify(todo)
   })
 }

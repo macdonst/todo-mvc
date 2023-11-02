@@ -73,11 +73,11 @@ export default class TodoList extends CustomElement {
       todoItem.removeAttribute('completed')
     let task = target.nextElementSibling.innerText
 
-    this.api.update(JSON.stringify({ key, task, completed }))
+    this.api.update({ key, task, completed })
   }
 
   deleteTodo = (key) => {
-    this.api.destroy(JSON.stringify({ key }))
+    this.api.destroy({ key })
   }
 
   render({ html, state }) {

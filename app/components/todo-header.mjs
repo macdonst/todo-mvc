@@ -20,7 +20,7 @@ export default class TodoHeader extends CustomElement {
 
   addTodo = (event) => {
     event.preventDefault()
-    this.api.create(JSON.stringify({ task: this.input.value }))
+    this.api.create({ task: this.input.value })
     this.form.reset()
   }
 

@@ -58,7 +58,7 @@ export default class TodoItem extends MorphdomMixin(CustomElement) {
     let completed = this.checkbox.checked ? true : false
 
     this.setAttribute('task', task)
-    this.api.update(JSON.stringify({ key, task, completed }))
+    this.api.update({ key, task, completed })
   }
 
   render({ html, state }) {

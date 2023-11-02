@@ -1,7 +1,6 @@
 /* globals customElements, document */
 import CustomElement from '@enhance-labs/custom-element'
 import API from './api.mjs'
-
 export default class TodoFooter extends CustomElement {
   constructor () {
     super()
@@ -36,7 +35,7 @@ export default class TodoFooter extends CustomElement {
     list.map(anchor => {
       anchor === event.target ? anchor.classList.add('selected') : anchor.classList.remove('selected')
     })
-    document.querySelector('todo-list').setAttribute('filter', 'completed')
+    document.querySelector('todo-list').setAttribute('filter', event.target.innerText.toLowerCase())
   }
 
   clear = () => {

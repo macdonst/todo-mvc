@@ -1,18 +1,24 @@
 /* globals customElements */
 import CustomElement from '@enhance-labs/custom-element'
 import API from './api.mjs'
+import Store from '@enhance/store'
 
 export default class TodoList extends CustomElement {
   constructor () {
     super()
     this.api = API()
     this.api.list()
+    this.store = Store()
     this.section = this.querySelector('section')
     this.ul = this.querySelector('ul')
   }
 
+  static get observedAttributes() {
+    return [ 'filter' ]
+  }
+
   connectedCallback() {
-    this.api.subscribe(this.update, [ 'todos' ])
+    this.api.subscribe(this.update, [ 'todos', 'active', 'completed', 'filter' ])
     this.addEventListener('click', this.handleClick)
     this.addEventListener('dblclick', this.handleDblClick)
   }
@@ -23,9 +29,22 @@ export default class TodoList extends CustomElement {
     this.removeEventListener('dblclick', this.handleDblClick)
   }
 
-  update = ({ todos }) => {
+  filterChanged(filter) {
+    this.update({ todos: this.store.todos, active: this.store.active, completed: this.store.completed, filter })
+  }
+
+  update = ({ todos, active, completed, filter }) => {
+    let items = null
+    if (filter === 'active') {
+      items = active
+    } else if (filter === 'completed') {
+      items = completed
+    } else {
+      items = todos
+    }
+
     this.section.style.display = todos.length > 0 ? 'block' : 'none'
-    this.ul.innerHTML = todos.map(todo => `<todo-item key="${todo.key}" ${todo.completed ? 'completed' : ''} task="${todo.task}"></todo-item>`).join('')
+    this.ul.innerHTML = items.map(todo => `<todo-item key="${todo.key}" ${todo.completed ? 'completed' : ''} task="${todo.task}"></todo-item>`).join('')
   }
 
   handleClick = (event) => {

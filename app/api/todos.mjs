@@ -10,6 +10,8 @@ import { getTodos, upsertTodo, validate } from '../models/todos.mjs'
  */
 export async function get (req) {
   const todos = await getTodos()
+  const active = todos.filter(todo => !todo.completed)
+  const completed = todos.filter(todo => todo.completed)
   if (req.session.problems) {
     let { problems, todo, ...session } = req.session
     return {
@@ -19,7 +21,7 @@ export async function get (req) {
   }
 
   return {
-    json: { todos }
+    json: { todos, active, completed }
   }
 }
 

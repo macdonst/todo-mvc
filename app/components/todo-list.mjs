@@ -30,20 +30,12 @@ export default class TodoList extends CustomElement {
   }
 
   filterChanged(filter) {
-    this.update({ todos: this.store.todos, active: this.store.active, completed: this.store.completed, filter })
+    this.update({ filter })
   }
 
-  update = ({ todos, active, completed, filter }) => {
-    let items = null
-    if (filter === 'active') {
-      items = active
-    } else if (filter === 'completed') {
-      items = completed
-    } else {
-      items = todos
-    }
-
-    this.section.style.display = todos.length > 0 ? 'block' : 'none'
+  update = ({ filter = 'all' }) => {
+    this.section.style.display = this.store.todos.length > 0 ? 'block' : 'none'
+    let items = filter === 'all' ? this.store.todos : this.store[filter]
     this.ul.innerHTML = items.map(todo => `<todo-item key="${todo.key}" ${todo.completed ? 'completed' : ''} task="${todo.task}"></todo-item>`).join('')
   }
 
@@ -91,19 +83,10 @@ export default class TodoList extends CustomElement {
   render({ html, state }) {
     const { store = {}, attrs = {} } = state
     const { filter = 'all' } = attrs
-    const { todos = [], active = [], completed = [] } = store
+    const { todos = [] } = store
 
     const display = todos.length ? 'block' : 'none'
-
-    let items = null
-    if (filter === 'active') {
-      items = active
-    } else if (filter === 'completed') {
-      items = completed
-    } else {
-      items = todos
-    }
-
+    let items = filter === 'all' ? todos : store[filter] || []
     const listItems = items.map(todo => `<todo-item key="${todo.key}" ${todo.completed ? 'completed' : ''} task="${todo.task}"></todo-item>`).join('')
 
     return html`

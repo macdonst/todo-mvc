@@ -18,7 +18,7 @@ export default class TodoList extends CustomElement {
   }
 
   connectedCallback() {
-    this.api.subscribe(this.update, [ 'todos', 'active', 'completed', 'filter' ])
+    this.api.subscribe(this.update, [ 'todos', 'active', 'completed' ])
     this.addEventListener('click', this.handleClick)
     this.addEventListener('dblclick', this.handleDblClick)
   }
@@ -29,11 +29,12 @@ export default class TodoList extends CustomElement {
     this.removeEventListener('dblclick', this.handleDblClick)
   }
 
-  filterChanged(filter) {
-    this.update({ filter })
+  filterChanged() {
+    this.update()
   }
 
-  update = ({ filter = 'all' }) => {
+  update = () => {
+    let filter = this.getAttribute('filter') || 'all'
     this.section.style.display = this.store.todos.length > 0 ? 'block' : 'none'
     let items = filter === 'all' ? this.store.todos : this.store[filter]
     this.ul.innerHTML = items.map(todo => `<todo-item key="${todo.key}" ${todo.completed ? 'completed' : ''} task="${todo.task}"></todo-item>`).join('')

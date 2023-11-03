@@ -44,16 +44,16 @@ export default class TodoFooter extends CustomElement {
 
   render({ html, state }) {
     const { store = {} } = state
-    const { todos = [], active = [], completed = [] } = store
+    const { todos = [], active = [], completed = [], filter = 'all' } = store
     const display = todos.length ? 'block' : 'none'
 
     return html`
   <footer class="footer" style="display: ${display};">
     <span class="todo-count"><strong>${active.length}</strong> items left</span>
     <ul class="filters">
-    <li><a href="/todos" class="selected">All</a></li>
-      <li><a href="/todos?filter=active" >Active</a></li>
-      <li><a href="/todos?filter=completed" >Completed</a></li></ul>
+      <li><a href="/todos" class="${filter === 'all' ? 'selected' : ''}">All</a></li>
+      <li><a href="/todos?filter=active" class="${filter === 'active' ? 'selected' : ''}">Active</a></li>
+      <li><a href="/todos?filter=completed" class="${filter === 'completed' ? 'selected' : ''}">Completed</a></li></ul>
       <form action="/todos/completed/delete" method="POST">
         <button class="clear-completed" style="display: ${completed.length ? 'block' : 'none'};">Clear completed</button>
       </form>

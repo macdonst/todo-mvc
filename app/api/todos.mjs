@@ -9,9 +9,9 @@ import { getTodos, upsertTodo, validate } from '../models/todos.mjs'
  * @type {EnhanceApiFn}
  */
 export async function get (req) {
-  const todos = await getTodos()
-  const active = todos.filter(todo => !todo.completed)
-  const completed = todos.filter(todo => todo.completed)
+  let todos = await getTodos()
+  let active = todos.filter(todo => !todo.completed)
+  let completed = todos.filter(todo => todo.completed)
   if (req.session.problems) {
     let { problems, todo, ...session } = req.session
     return {
@@ -20,8 +20,12 @@ export async function get (req) {
     }
   }
 
+  const filter = req.query.filter
+  if (filter==='active') todos = active
+  if (filter==='completed') todos = completed
+
   return {
-    json: { todos, active, completed }
+    json: { todos, active, completed, filter }
   }
 }
 

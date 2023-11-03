@@ -31,7 +31,7 @@
   "dependencies": {
     "@begin/validator": "^1.0.1",
     "@enhance-labs/arc-plugin-enhance": "latest",
-    "@enhance-labs/custom-element": "latest",
+    "@enhance/custom-element": "latest",
     "@enhance/form-elements": "^1.0.3",
     "@enhance/morphdom-mixin": "^1.1.1",
     "@enhance/store": "^1.0.1",

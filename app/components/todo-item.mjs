@@ -1,5 +1,5 @@
 /* globals customElements */
-import CustomElement from '@enhance-labs/custom-element'
+import CustomElement from '@enhance/custom-element'
 import MorphdomMixin from '@enhance/morphdom-mixin'
 import API from './api.mjs'
 

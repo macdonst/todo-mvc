@@ -1,5 +1,5 @@
 /* globals customElements */
-import CustomElement from '@enhance-labs/custom-element'
+import CustomElement from '@enhance/custom-element'
 
 export default class TodoApp extends CustomElement {
   render({ html }) {

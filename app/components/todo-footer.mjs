@@ -1,5 +1,5 @@
 /* globals customElements, document */
-import CustomElement from '@enhance-labs/custom-element'
+import CustomElement from '@enhance/custom-element'
 import API from './api.mjs'
 export default class TodoFooter extends CustomElement {
   constructor () {
